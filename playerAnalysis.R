@@ -19,3 +19,24 @@ if (!is.null(playerData)) {
   cat("Error: Failed to load data from one or more files.\n")
 }
 
+# Perform sentiment analysis
+player_sentiment <- playerData %>%
+  mutate(sentiment = ifelse(G > 0 | A > 0, "Positive", "Neutral"))
+
+# Display summary of sentiment
+cat("\nSummary of Sentiment Analysis:\n")
+print(summary(player_sentiment$sentiment))
+
+# Aggregate total goals for each player across all seasons
+total_goals <- playerData %>%
+  group_by(FirstName, LastName) %>%
+  summarise(TotalGoals = sum(G))
+
+# Sort the data to get the top 10 players by total goals
+top_10_goals <- total_goals %>%
+  arrange(desc(TotalGoals)) %>%
+  head(10)
+
+# Print the top 10 players by total goals
+cat("\nTop 10 Players by Total Goals Across All Seasons:\n")
+print(top_10_goals)
