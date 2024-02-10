@@ -43,7 +43,34 @@ cat("\nTop 10 Players by Total Goals Across All Seasons:\n")
 print(top_10_goals)
 
 # Create a bar chart for the top 10 players by total goals
-ggplot(top_10_goals, aes(x = reorder(paste(FirstName, LastName), TotalGoals), y = TotalGoals)) +
+plot_top_goals <- ggplot(top_10_goals, aes(x = reorder(paste(FirstName, LastName), TotalGoals), y = TotalGoals)) +
   geom_bar(stat = "identity", fill = "skyblue") +
   labs(title = "Top 10 Players by Total Goals Across All Seasons (17/18-22/23)", x = "Player", y = "Total Goals") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the plot
+ggsave(filename = "plots/topGoalScorers.png", plot = plot_top_goals, width = 10, height = 6)
+
+
+# Aggregate total passes for each player across all seasons
+total_passes <- playerData %>%
+  group_by(FirstName, LastName) %>%
+  summarise(TotalPasses = sum(Passes))
+
+# Sort the data to get the top 10 players by total passes
+top_10_passes <- total_passes %>%
+  arrange(desc(TotalPasses)) %>%
+  head(10)
+
+# Print the top 10 players by total passes
+cat("\nTop 10 Players by Total Passes Across All Seasons:\n")
+print(top_10_passes)
+
+# Create a bar chart for the top 10 players by total passes
+plot_top_passes <- ggplot(top_10_passes, aes(x = reorder(paste(FirstName, LastName), TotalPasses), y = TotalPasses)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Top 10 Players by Total Passes Across All Seasons (17/18-22/23)", x = "Player", y = "Total Passes") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the plot
+ggsave(filename = "plots/topPassMakers.png", plot = plot_top_passes, width = 10, height = 6)
