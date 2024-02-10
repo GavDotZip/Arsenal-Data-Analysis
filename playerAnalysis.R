@@ -2,6 +2,7 @@
 library(readxl)
 library(tidyverse)
 library(tidytext)
+library(ggplot2)
 
 # File paths for dataset
 players <- "datasets/players.xlsx"
@@ -40,3 +41,9 @@ top_10_goals <- total_goals %>%
 # Print the top 10 players by total goals
 cat("\nTop 10 Players by Total Goals Across All Seasons:\n")
 print(top_10_goals)
+
+# Create a bar chart for the top 10 players by total goals
+ggplot(top_10_goals, aes(x = reorder(paste(FirstName, LastName), TotalGoals), y = TotalGoals)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Top 10 Players by Total Goals Across All Seasons (17/18-22/23", x = "Player", y = "Total Goals") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
