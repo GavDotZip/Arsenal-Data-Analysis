@@ -1,5 +1,7 @@
 # Load the readxl package
 library(readxl)
+library(tidyverse)
+library(tidytext)
 
 # File paths for dataset
 players <- "datasets/players.xlsx"
@@ -16,3 +18,4 @@ if (!is.null(playerData)) {
 } else {
   cat("Error: Failed to load data from one or more files.\n")
 }
+
