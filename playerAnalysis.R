@@ -74,3 +74,28 @@ plot_top_passes <- ggplot(top_10_passes, aes(x = reorder(paste(FirstName, LastNa
 
 # Save the plot
 ggsave(filename = "plots/topPassMakers.png", plot = plot_top_passes, width = 10, height = 6)
+
+
+# Aggregate total games as captain for each player across all seasons
+total_captain_games <- playerData %>%
+  filter(C == 1) %>%  # Filter rows where player is captain
+  group_by(FirstName, LastName) %>%
+  summarise(TotalCaptainGames = n())  # Count the number of rows for each player
+
+# Sort the data to get the top 10 players by total games as captain
+top_10_captains <- total_captain_games %>%
+  arrange(desc(TotalCaptainGames)) %>%
+  head(10)
+
+# Print the top 10 players by total games as captain
+cat("\nTop 10 Players by Total Games as Captain Across All Seasons:\n")
+print(top_10_captains)
+
+# Create a bar chart for the top 10 players by total games as captain
+plot_top_captains <- ggplot(top_10_captains, aes(x = reorder(paste(FirstName, LastName), TotalCaptainGames), y = TotalCaptainGames)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Top 10 Players by Total Games as Captain Across All Seasons", x = "Player", y = "Total Games as Captain") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the plot
+ggsave(filename = "plots/topCaptains.png", plot = plot_top_captains, width = 10, height = 6)
