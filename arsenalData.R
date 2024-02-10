@@ -13,9 +13,19 @@ playerData <- read_excel(players)
 
 # Check if data is loaded correctly
 if (!is.null(goalkeeperData) && !is.null(matchData) && !is.null(playerData)) {
-  # Display a summary of matches data
+  
+  # Display summary of matches data
   cat("Summary of Matches Data:\n")
   print(summary(matchData))
+  
+  # Display summary of players data
+  cat("\nSummary of Players Data:\n")
+  print(summary(playerData))
+  
+  # Display summary of goalkeepers data
+  cat("\nSummary of Goalkeepers Data:\n")
+  print(summary(goalkeeperData))
 } else {
   cat("Error: Failed to load data from one or more files.\n")
 }
+
