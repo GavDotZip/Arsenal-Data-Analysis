@@ -124,3 +124,35 @@ plot_top_captains <- ggplot(top_10_captains, aes(x = reorder(paste(FirstName, La
 
 # Save the plot
 ggsave(filename = "plots/topCaptains.png", plot = plot_top_captains, width = 10, height = 6)
+
+
+# Calculate time played to goals ratio for each player
+playerData <- mutate(playerData, TimeToGoalsRatio = Min / G)
+
+# Filter out infinite and NA values
+playerData <- playerData[is.finite(playerData$TimeToGoalsRatio) & !is.na(playerData$TimeToGoalsRatio), ]
+
+# Aggregate total time played to goals ratio for each player across all seasons
+total_time_to_goals_ratio <- playerData %>%
+  group_by(FirstName, LastName) %>%
+  summarise(TotalTimeToGoalsRatio = sum(TimeToGoalsRatio))
+
+# Sort the data to get the top 10 players by total time played to goals ratio
+top_10_time_to_goals_ratio <- total_time_to_goals_ratio %>%
+  arrange(TotalTimeToGoalsRatio) %>%
+  head(10)
+
+# Print the top 10 players by total time played to goals ratio
+cat("\nTop 10 Players by Total Time Played to Goals Ratio Across All Seasons:\n")
+print(top_10_time_to_goals_ratio)
+
+# Create a stacked bar chart for the top 10 players by total time played to goals ratio
+plot_top_time_to_goals_ratio <- ggplot(top_10_time_to_goals_ratio, aes(x = reorder(paste(FirstName, LastName), TotalTimeToGoalsRatio), y = TotalTimeToGoalsRatio, fill = "Total Time Played to Goals Ratio")) +
+  geom_bar(stat = "identity") +
+  labs(title = "Top 10 Players by Total Time Played to Goals Ratio Across All Seasons", x = "Player", y = "Total Time Played to Goals Ratio") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(values = "skyblue")
+
+# Save the plot
+ggsave(filename = "plots/topTimeToGoalsRatio.png", plot = plot_top_time_to_goals_ratio, width = 10, height = 6)
+
