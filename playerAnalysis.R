@@ -76,6 +76,31 @@ plot_top_passes <- ggplot(top_10_passes, aes(x = reorder(paste(FirstName, LastNa
 ggsave(filename = "plots/topPassMakers.png", plot = plot_top_passes, width = 10, height = 6)
 
 
+# Aggregate total minutes played for each player across all seasons
+total_minutes_played <- playerData %>%
+  group_by(FirstName, LastName) %>%
+  summarise(TotalMinutesPlayed = sum(Min))
+
+# Sort the data to get the top 10 players by total minutes played
+top_10_minutes_played <- total_minutes_played %>%
+  arrange(desc(TotalMinutesPlayed)) %>%
+  head(10)
+
+# Print the top 10 players by total minutes played
+cat("\nTop 10 Players by Total Minutes Played Across All Seasons:\n")
+print(top_10_minutes_played)
+
+# Create a bar chart for the top 10 players by total minutes played
+plot_top_minutes_played <- ggplot(top_10_minutes_played, aes(x = reorder(paste(FirstName, LastName), TotalMinutesPlayed), y = TotalMinutesPlayed)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Top 10 Players by Total Minutes Played Across All Seasons", x = "Player", y = "Total Minutes Played") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the plot
+ggsave(filename = "plots/topMinutesPlayed.png", plot = plot_top_minutes_played, width = 10, height = 6)
+
+
+
 # Aggregate total games as captain for each player across all seasons
 total_captain_games <- playerData %>%
   filter(C == 1) %>%  # Filter rows where player is captain
