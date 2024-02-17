@@ -35,3 +35,17 @@ ggplot(games_per_season, aes(x = "", y = Num_Games, fill = Season)) +
 
 # Save the pie chart to the 'plots' folder
 ggsave("plots/games_per_season_pie_chart.png", plot = games_per_season)
+
+# Calculate average attendance per season
+avg_attendance_per_season <- matchData %>%
+  group_by(Season) %>%
+  summarise(Avg_Attendance = mean(Attendance, na.rm = TRUE))
+
+# Create a line chart
+line_chart <- ggplot(avg_attendance_per_season, aes(x = Season, y = Avg_Attendance)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Average Attendance per Season", x = "Season", y = "Average Attendance")
+
+# Save the line chart to the 'plots' folder
+ggsave("plots/avg_attendance_per_season_line_chart.png", plot = line_chart)
