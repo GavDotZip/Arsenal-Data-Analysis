@@ -49,3 +49,20 @@ line_chart <- ggplot(avg_attendance_per_season, aes(x = Season, y = Avg_Attendan
 
 # Save the line chart to the 'plots' folder
 ggsave("plots/avg_attendance_per_season_line_chart.png", plot = line_chart)
+
+# Count the number of matches played against each opponent
+matches_against_opponent <- matchData %>%
+  group_by(Opponent) %>%
+  summarise(Num_Matches = n()) %>%
+  arrange(desc(Num_Matches)) %>%
+  top_n(10) # Select top 10 opponents with most matches
+
+# Create a bar chart
+bar_chart <- ggplot(matches_against_opponent, aes(x = fct_reorder(Opponent, Num_Matches), y = Num_Matches)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Top 10 Opponents", x = "Opponent", y = "Number of Matches") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+
+# Save the bar chart to the 'plots' folder
+ggsave("plots/top_10_opponents_bar_chart.png", plot = bar_chart)
