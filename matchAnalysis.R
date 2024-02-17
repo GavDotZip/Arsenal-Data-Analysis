@@ -12,10 +12,26 @@ matchData <- read_excel(matches)
 
 if (!is.null(matchData)) {
   
-  # Display summary of players data
+  # Display summary of match data
   cat("\nSummary of Players Data:\n")
   print(summary(matchData))
   
 } else {
   cat("Error: Failed to load data from one or more files.\n")
 }
+
+# Count the number of games played per season
+games_per_season <- matchData %>%
+  group_by(Season) %>%
+  summarise(Num_Games = n())
+
+# Create a pie chart
+ggplot(games_per_season, aes(x = "", y = Num_Games, fill = Season)) +
+  geom_bar(stat = "identity") +
+  coord_polar("y", start = 0) +
+  labs(title = "Games Played per Season", fill = "Season") +
+  theme_void() +
+  theme(legend.position = "right")
+
+# Save the pie chart to the 'plots' folder
+ggsave("plots/games_per_season_pie_chart.png", plot = games_per_season)
