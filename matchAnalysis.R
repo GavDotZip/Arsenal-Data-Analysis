@@ -66,3 +66,17 @@ bar_chart <- ggplot(matches_against_opponent, aes(x = fct_reorder(Opponent, Num_
 
 # Save the bar chart to the 'plots' folder
 ggsave("plots/top_10_opponents_bar_chart.png", plot = bar_chart)
+
+# Count the number of matches officiated by each referee
+referee_games <- matchData %>%
+  group_by(Referee) %>%
+  summarise(Num_Games = n()) %>%
+  arrange(desc(Num_Games)) %>%
+  top_n(5) # Select top 5 referees with most games
+
+# Create a bar chart
+bar_chart_referee <- ggplot(referee_games, aes(x = fct_reorder(Referee, Num_Games), y = Num_Games)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Top 5 Referees by Number of Games", x = "Referee", y = "Number of Games") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
