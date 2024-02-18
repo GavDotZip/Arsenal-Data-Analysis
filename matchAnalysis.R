@@ -108,4 +108,8 @@ stacked_bar_chart <- matchData %>%
   mutate(Result = ifelse(ArsenalScore > OpponentScore, "Win", 
                          ifelse(ArsenalScore == OpponentScore, "Draw", "Loss")),
          Result = factor(Result, levels = c("Win", "Draw", "Loss"))) %>%
-  group_by(Season, HoAw, Result)
+  group_by(Season, HoAw, Result) %>%
+  summarise(Count = n()) %>%
+  ggplot(aes(x = Season, y = Count, fill = Result)) +
+  geom_bar(stat = "identity", position = "stack") +
+  facet_wrap(~HoAw, scales = "free", nrow = 2) 
