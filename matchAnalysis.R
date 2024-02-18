@@ -117,3 +117,6 @@ stacked_bar_chart <- matchData %>%
        x = "Season", y = "Count", fill = "Result") +
   theme_minimal() +
   theme(legend.position = "right")
+
+# Save the stacked bar chart to the 'plots' folder
+ggsave("plots/stacked_bar_chart_outcome_per_season.png", plot = stacked_bar_chart)
