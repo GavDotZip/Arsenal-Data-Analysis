@@ -102,3 +102,10 @@ stacked_bar_chart <- matchData %>%
 
 # Save the stacked bar chart to the 'plots' folder
 ggsave("plots/stacked_bar_chart_goals_per_season.png", plot = stacked_bar_chart)
+
+# Create a stacked bar chart per season
+stacked_bar_chart <- matchData %>%
+  mutate(Result = ifelse(ArsenalScore > OpponentScore, "Win", 
+                         ifelse(ArsenalScore == OpponentScore, "Draw", "Loss")),
+         Result = factor(Result, levels = c("Win", "Draw", "Loss"))) %>%
+  group_by(Season, HoAw, Result)
