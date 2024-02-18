@@ -90,4 +90,12 @@ stacked_bar_chart <- matchData %>%
   summarise(Arsenal_Goals = sum(ArsenalScore),
             Opponent_Goals = sum(OpponentScore)) %>%
   pivot_longer(cols = c(Arsenal_Goals, Opponent_Goals),
-               names_to = "Team", values_to = "Goals")
+               names_to = "Team", values_to = "Goals") %>%
+  ggplot(aes(x = Season, y = Goals, fill = Team)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Goals Scored by Arsenal vs Opponent per Season",
+       x = "Season", y = "Goals") +
+  scale_fill_manual(values = c("Arsenal_Goals" = "red", "Opponent_Goals" = "blue"),
+                    name = "Team") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
