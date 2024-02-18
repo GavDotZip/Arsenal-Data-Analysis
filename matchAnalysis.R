@@ -80,3 +80,12 @@ bar_chart_referee <- ggplot(referee_games, aes(x = fct_reorder(Referee, Num_Game
   labs(title = "Top 5 Referees by Number of Games", x = "Referee", y = "Number of Games") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   coord_flip()
+
+# Save the bar chart to the 'plots' folder
+ggsave("plots/top_5_referees_bar_chart.png", plot = bar_chart_referee)
+
+# Create a stacked bar chart per season
+stacked_bar_chart <- matchData %>%
+  group_by(Season) %>%
+  summarise(Arsenal_Goals = sum(ArsenalScore),
+            Opponent_Goals = sum(OpponentScore))
