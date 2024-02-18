@@ -88,4 +88,6 @@ ggsave("plots/top_5_referees_bar_chart.png", plot = bar_chart_referee)
 stacked_bar_chart <- matchData %>%
   group_by(Season) %>%
   summarise(Arsenal_Goals = sum(ArsenalScore),
-            Opponent_Goals = sum(OpponentScore))
+            Opponent_Goals = sum(OpponentScore)) %>%
+  pivot_longer(cols = c(Arsenal_Goals, Opponent_Goals),
+               names_to = "Team", values_to = "Goals")
