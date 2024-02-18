@@ -112,4 +112,8 @@ stacked_bar_chart <- matchData %>%
   summarise(Count = n()) %>%
   ggplot(aes(x = Season, y = Count, fill = Result)) +
   geom_bar(stat = "identity", position = "stack") +
-  facet_wrap(~HoAw, scales = "free", nrow = 2) 
+  facet_wrap(~HoAw, scales = "free", nrow = 2) +
+  labs(title = "Outcome of Arsenal Matches per Season",
+       x = "Season", y = "Count", fill = "Result") +
+  theme_minimal() +
+  theme(legend.position = "right")
